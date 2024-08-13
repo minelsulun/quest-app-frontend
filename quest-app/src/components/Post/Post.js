@@ -44,7 +44,6 @@ function Post(props) {
   const [isLiked, setIsLiked]=useState(false);
   const [likeCount, setIsLikeCount] = useState(likes.length);
   const [likeId,setLikeId] = useState(null);
-  const [newLikeHandler, setnewLikeHandler] = useState(null);
 
   const [newComment, setNewComment] = useState(false);
 
