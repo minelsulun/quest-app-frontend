@@ -13,8 +13,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/users/:userId" element={<User />} />
-          <Route exact path='/auth' component={Auth} ></Route>
-
+          <Route path='/auth' Component={Auth} ></Route>
         </Routes>
       </BrowserRouter>
     </div>
