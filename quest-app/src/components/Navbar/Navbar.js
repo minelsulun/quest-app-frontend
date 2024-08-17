@@ -1,16 +1,24 @@
 import * as React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
+import {LockOpen} from "@mui/icons-material"
 
 
 
 function Navbar() {
-  let userId = 5;
+  let navigate = useNavigate();
+
+  const onClick = () =>{
+    localStorage.removeItem("tokenKey")
+    localStorage.removeItem("currentUser")
+    localStorage.removeItem("userName")
+    navigate(0)
+  }
   return (
     <Box sx={{ flexGrow: 1 }} >
       <AppBar position="relative" z-index='1' sx={{ backgroundColor: 'pink' }} elevation={4}>
@@ -31,9 +39,12 @@ function Navbar() {
           </Typography>
 
           <Typography variant="h6" component="div" sx={{ flexGrow: 1,textAlign:"right" }} >
-            <Link style={{ textDecoration: 'none', color: 'inherit', flexGrow:"1" }} to={`/users/${userId}`}>
-              User
-            </Link>
+            {localStorage.getItem("currentUser")==null ? <Link style={{ textDecoration: 'none', color: 'inherit', flexGrow:"1" }} to="/auth"> Login/Register</Link> : 
+            <div><IconButton onClick={onClick}><LockOpen></LockOpen></IconButton>
+            <Link style={{ textDecoration: 'none', color: 'inherit', flexGrow:"1" }} to={{pathname : '/users/' +localStorage.getItem("currentUser")}}>
+            Profile</Link> 
+            </div>} 
+            
           </Typography>
 
         </Toolbar>

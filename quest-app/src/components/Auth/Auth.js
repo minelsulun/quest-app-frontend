@@ -1,7 +1,8 @@
 import { Button, FormControl, Input, InputLabel, Box, FormHelperText } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import React, { useState } from "react";
-import { json, Navigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+
 
 // Styled components
 const StyledFormControl = styled(FormControl)(({ theme }) => ({
@@ -27,6 +28,8 @@ function Auth() {
 
     const[username,SetUsername]=useState("")
     const[password,setPassword]=useState("")
+    const navigate = useNavigate() // useNavigate hook'u kullanıyoruz
+
 
     const handleUsername = (value) => {
         SetUsername(value);
@@ -35,38 +38,38 @@ function Auth() {
         setPassword(value)
     }
     const sendRequest = (path) => {
-        fetch("/auth"+path,{
+      console.log("/auth/"+path);
+      console.log(username,password);
+        fetch("/auth/"+path,{
             method:"POST",
             headers: {
                 "Content-Type" : "application/json",
-            },
+            },            
             body : JSON.stringify({
-                username:username,
+                userName:username,
                 password:password,
             }),
-        })
+        }  
+      )
         .then((res) => res.json())
-        .then((result) =>{localStorage.setItem("tokenKey",result.massage);
+        .then((result) =>{localStorage.setItem("tokenKey",result.message);
                           localStorage.setItem("currentUser",result.userId);
-                          localStorage.setItem("userName",username)})
-
+                          localStorage.setItem("userName",username);
+                        })
+        .then(()=>navigate(0))
         .catch((err) => console.log(err))       
     }
-
-
 
     const handleRegister = () => {
         sendRequest("register")
         SetUsername("")
-        setPassword("")
-        Navigate("/auth")
+        setPassword("")    
     }
     const handleLogin = () => {
         sendRequest("login")
         SetUsername("")
         setPassword("")
     }
-
   return (
     <Box
       sx={{
@@ -92,7 +95,7 @@ function Auth() {
       </StyledFormControl>
 
       <StyledButton  variant="contained" fullWidth 
-      onClick={handleRegister()}>
+      onClick={()=>handleRegister()}>
         Register
       </StyledButton>
 
@@ -103,7 +106,7 @@ function Auth() {
                     background: 'linear-gradient(45deg, #f48fb1 30%, #f06292 90%)', // pink gradient
                     color: 'white'
                 }}
-                onChange={(i)=>handleLogin(i.target.value)}>
+                onClick={()=>handleLogin()}>
                 Login
             </Button>
     </Box>
