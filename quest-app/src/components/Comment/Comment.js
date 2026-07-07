@@ -2,6 +2,7 @@ import React from 'react';
 import { styled } from '@mui/material/styles';
 import { CardContent, OutlinedInput, InputAdornment, Avatar } from '@mui/material';
 import { pink } from '@mui/material/colors';
+import { getAvatarImage } from '../Avatar/AvatarHelper';
 
 // Stil tanımlamaları
 const StyledCardContent = styled(CardContent)(({ theme }) => ({
@@ -27,8 +28,9 @@ const StyledOutlinedInput = styled(OutlinedInput)(({ theme }) => ({
     },
 }));
 
+
 function Comment(props) {
-    const { text, userId, userName } = props;
+    const { text, userId, userName, avatarId } = props;
 
     return (
         <StyledCardContent>
@@ -41,8 +43,12 @@ function Comment(props) {
                 value={text}
                 startAdornment={
                     <InputAdornment position="start">
-                        <Avatar sx={{ bgcolor: pink[200] }} aria-label="post">
-                            {userName.charAt(0).toUpperCase()}
+                        <Avatar 
+                            src={getAvatarImage(avatarId)} 
+                            sx={{ bgcolor: pink[200] }} 
+                            aria-label="post"
+                        >
+                            {!avatarId && userName ? userName.charAt(0).toUpperCase() : null}
                         </Avatar>
                     </InputAdornment>
                 }

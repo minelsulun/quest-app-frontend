@@ -75,7 +75,7 @@ function CommentForm({ userId, userName, postId, onCommentAdded, setNewComment }
                 startAdornment={
                     <InputAdornment position="start">
                         <Avatar sx={{ bgcolor: pink[200] }} aria-label="post">
-                            {userName.charAt(0).toUpperCase()}
+                            {userName?.charAt(0).toUpperCase()}
                         </Avatar>
                     </InputAdornment>
                 }

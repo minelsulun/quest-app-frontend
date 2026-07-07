@@ -55,7 +55,7 @@ function Home() {
          
           {postList.map(post => (
             
-              <Post likes={post.postLikes} key={post.id} postId={post.id} userId={post.userId} userName= {post.userName} 
+              <Post likes={post.postLikes} key={post.id} postId={post.id} userId={post.userId} userName= {post.userName} avatarId={post.avatarId}
               title={post.title} text={post.text} />   
           ))}
         </StyledContainer>

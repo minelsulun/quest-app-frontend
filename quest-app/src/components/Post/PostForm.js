@@ -42,16 +42,16 @@ function PostForm(props) {
       .then((response) => response.json())
       .then((data) => {
         console.log("Success", data);
+        setIsSent(true);
+        setTitle("");
+        setText("");
+        refreshPosts();
       })
       .catch((err) => console.log("error", err));
   };
 
   const handleSubmit = () => {
     savePost();
-    setIsSent(true);
-    setTitle("");
-    setText("");
-    refreshPosts();
   };
 
   const handleTitle = (value) => {

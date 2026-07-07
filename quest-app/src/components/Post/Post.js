@@ -17,6 +17,8 @@ import { Container } from "@mui/system";
 import Comment from "../Comment/Comment";
 import CommentForm from "../Comment/CommentForm";
 
+import { getAvatarImage } from "../Avatar/AvatarHelper";
+
 // Stil tanımlamaları
 const PostContainer = styled('div')`
   margin-bottom: 16px; // Post'lar arasında boşluk ekler
@@ -36,13 +38,13 @@ const ExpandMore = styled((props) => {
 
 function Post(props) {
 
-  const { title, text, userId, userName, postId, likes } = props;
+  const { title, text, userId, userName, postId, likes, avatarId } = props;
   const [expanded, setExpanded] = React.useState(false);
   const [error, setError] = useState(null);
   const [isLoaded, setIsLoaded] = useState(false);
   const [commentList, setCommentList] = useState([]);
   const [isLiked, setIsLiked]=useState(false);
-  const [likeCount, setIsLikeCount] = useState(likes.length);
+  const [likeCount, setIsLikeCount] = useState(likes?.length || 0);
   const [likeId,setLikeId] = useState(null);
   let disabled = localStorage.getItem("currentUser")==null? true : false;
 
@@ -129,7 +131,7 @@ function Post(props) {
   };
 
   const checkLikes = () => {
-    const likeControl = likes.find((like) => ""+like.userId === localStorage.getItem("currentUser"));
+    const likeControl = likes?.find((like) => ""+like.userId === localStorage.getItem("currentUser"));
     if (likeControl != null) {
       setLikeId(likeControl.id);
       setIsLiked(true);
@@ -154,8 +156,7 @@ function Post(props) {
         <CardHeader
           avatar={
             <Link to={{pathname:'/users/'+userId}}  style={{ textDecoration : 'none'}} >
-            <Avatar sx={{ bgcolor: pink[200] }} aria-label="post">
-               {userName.charAt(0).toUpperCase()}              
+            <Avatar src={getAvatarImage(avatarId)} sx={{ bgcolor: pink[200], width: 40, height: 40, backgroundColor: '#f0f5ff' }} aria-label="post">
             </Avatar>
             </Link>
             
@@ -166,6 +167,7 @@ function Post(props) {
             </IconButton>
           }
           title={title}
+          subheader={userName}
         />
        
         <CardContent>
@@ -208,7 +210,7 @@ function Post(props) {
         <Container fixed>
             {error ? "Error" :
               isLoaded ? commentList.map(comment => (
-                <Comment  userId={localStorage.getItem("currentUser")} userName={localStorage.getItem("userName")} text={comment.text}></Comment>
+                <Comment  userId={comment.userId} userName={comment.userName} text={comment.text} avatarId={comment.avatarId}></Comment>
               )) : "Loading"
             }
             {localStorage.getItem("currentUser") == null ? "":
